@@ -39,13 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 3;
   late SignUpController _controller;
 
-  // Extend _widgetOptions to include SignUpPage at index 3
+
   final List<Widget> _widgetOptions = [
     const HomePage(),
     const BalancePage(),
     const AddTransactionPage(),
     // ignore: non_constant_identifier_names
-    SignUpPage(signUpCallback: (UserData ) {  },), // Placeholder for SignUpPage
+    SignUpPage(signUpCallback: (UserData ) {  },),
   ];
 
   @override
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Update SignUpPage in _widgetOptions based on _selectedIndex
+
     // ignore: non_constant_identifier_names
     _widgetOptions[3] = _selectedIndex == 3
         ? SignUpPage(signUpCallback: (userData) {
