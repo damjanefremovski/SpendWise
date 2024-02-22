@@ -64,7 +64,6 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Call signUpCallback with UserData
                 widget.signUpCallback(UserData(
                   fullName: fullNameController.text,
                   email: emailController.text,
@@ -92,7 +91,7 @@ class AddTransactionPage extends StatefulWidget {
 class _AddTransactionPageState extends State<AddTransactionPage> {
   final TextEditingController transactionNameController = TextEditingController();
   final TextEditingController transactionAmountController = TextEditingController();
-  TransactionCategory _selectedCategory = TransactionCategory.expenses; // Default category
+  TransactionCategory _selectedCategory = TransactionCategory.expenses;
 
   final TransactionController _transactionController = TransactionController();
 
@@ -163,22 +162,19 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                 );
 
                 try {
-                  // Add transaction to Firestore
                   await _transactionController.addTransaction(
                     FirebaseAuth.instance.currentUser!.uid,
                     transaction,
                   );
 
-                  // Add transaction to FinancialManager
                   FinancialManager.addTransaction(transaction);
 
-                  // Clear text fields after adding the transaction
                   transactionNameController.clear();
                   transactionAmountController.clear();
                 } catch (e) {
-                  // Handle error
+
                   print('Error adding transaction: $e');
-                  // Show error message to the user
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to add transaction')),
                   );
@@ -250,7 +246,7 @@ class CreditCardBalanceWidget extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 32),
           ),
           const SizedBox(height: 50),
-          // Display total balance here, you can retrieve it from FinancialManager
+
           Text(
             '\$${FinancialManager.totalBalance.toStringAsFixed(2)}',
             style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
@@ -304,7 +300,7 @@ class HomePage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 20),
-            const CreditCardBalanceWidget(), // Display credit card balance
+            const CreditCardBalanceWidget(),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -335,7 +331,7 @@ class HomePage extends StatelessWidget {
                   Transactions transaction = FinancialManager.recentTransactions[index];
                   return ListTile(
                     title: Text(transaction.transactionName),
-                    subtitle: Text(transaction.date.toString()), // Customize as needed
+                    subtitle: Text(transaction.date.toString()),
                     trailing: Text('\$${transaction.amount.toStringAsFixed(2)}'),
                   );
                 },
@@ -344,8 +340,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                // Navigate to page showing all transactions
-                // You can implement this navigation logic
+
               },
               child: const Text('See All'),
             ),
@@ -364,7 +359,7 @@ class BalancePage extends StatefulWidget {
 }
 
 class _BalancePageState extends State<BalancePage> {
-  // Default filter and sort options
+
   TransactionCategory _selectedCategory = TransactionCategory.expenses;
   SortOption _selectedSortOption = SortOption.newest;
 
@@ -377,7 +372,7 @@ class _BalancePageState extends State<BalancePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const CreditCardBalanceWidget(), // Display credit card balance
+          const CreditCardBalanceWidget(),
           const SizedBox(height: 20),
           _buildFilterSection(),
           const SizedBox(height: 20),
@@ -428,12 +423,12 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   Widget _buildTransactionList() {
-    // Filter and sort transactions based on user selections
+
     List<Transactions> filteredTransactions = FinancialManager.recentTransactions
         .where((transaction) => transaction.category == _selectedCategory)
         .toList();
 
-    // Sorting logic
+
     switch (_selectedSortOption) {
       case SortOption.newest:
         filteredTransactions.sort((a, b) => b.date.compareTo(a.date));
@@ -449,7 +444,7 @@ class _BalancePageState extends State<BalancePage> {
         break;
     }
 
-    // Display filtered and sorted transactions
+
     return Expanded(
       child: ListView.builder(
         itemCount: filteredTransactions.length,
