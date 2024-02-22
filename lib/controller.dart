@@ -12,29 +12,29 @@ class SignUpController {
   final CollectionReference _usersCollection =
   FirebaseFirestore.instance.collection('users');
 
-  // Define a BuildContext variable
+
   late BuildContext _context;
 
-  // Update the signUp method to accept the BuildContext
+
   Future<void> signUp(BuildContext context, UserData userData) async {
-    _context = context; // Assign the provided BuildContext to the variable
+    _context = context;
 
     try {
-      // Create user with email and password
+
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(
         email: userData.email,
         password: userData.password,
       );
 
-      // Save user's full name to Firestore
+
       await _usersCollection.doc(userCredential.user!.uid).set({
         'fullName': userData.fullName,
       });
 
       print('User registered successfully');
 
-      // Navigate to the home page
+
       Navigator.of(_context).pushReplacement(
         MaterialPageRoute(builder: (context) => HomePage()),
       );
@@ -47,7 +47,7 @@ class SignUpController {
       }
     } catch (e) {
       print('Error registering user: $e');
-      // Handle other errors, display error message
+
     }
   }
 }
